@@ -18,7 +18,7 @@ let todos = [{
 beforeEach(done => {
     Todo.remove({}).then(() => {
         return Todo.insertMany(todos)
-    }).then(() => done());
+    }).then(() => done()).catch(err => done(err));
 });
 
 describe('POST /todos', () => {
