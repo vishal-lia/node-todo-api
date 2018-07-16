@@ -52,6 +52,20 @@ UserSchema.methods.generateAuthToken = function() {
     });
 }
 
+UserSchema.methods.isValidPassword = function(password) {
+    let user = this;
+
+    return new Promise((resolve, reject) => {
+        bcrypt.compare(password, user.password, (err, res) => {
+            if(res) {
+                resolve(user);
+            } else {
+                reject();
+            }
+        });
+    });
+}
+
 //Model Methods
 UserSchema.statics.findByToken = function(token) {
     let User = this;
@@ -75,9 +89,11 @@ UserSchema.pre('save', function(next) {
     let user = this;
     if(user.isModified('password')) {
         bcrypt.genSalt(10, (err, salt) => {
-            if(err) throw err
+            if(err) { console.log('Error: ', err); }
+
             bcrypt.hash(user.password, salt, (err, hash) => {
-                if(err) throw err;
+                if(err) { console.log('Error: ', err); }
+
                 user.password = hash;
                 next();
             })
