@@ -39,7 +39,7 @@ UserSchema.methods.toJSON = function() {
     let userObject = user.toObject();
 
     return _.pick(userObject, ['_id', 'email']);
-}
+};
 
 UserSchema.methods.generateAuthToken = function() {
     let user = this;
@@ -50,7 +50,7 @@ UserSchema.methods.generateAuthToken = function() {
     return user.save().then(() => {
         return token;
     });
-}
+};
 
 UserSchema.methods.isValidPassword = function(password) {
     let user = this;
@@ -64,7 +64,17 @@ UserSchema.methods.isValidPassword = function(password) {
             }
         });
     });
-}
+};
+
+UserSchema.methods.removeToken = function(token) {
+    let user = this;
+
+    return user.update({
+        $pull: {
+            tokens: {token}
+        }
+    });
+};
 
 //Model Methods
 UserSchema.statics.findByToken = function(token) {
@@ -82,7 +92,7 @@ UserSchema.statics.findByToken = function(token) {
         'tokens.access': decoded.access,
         'tokens.token': token
     });
-}
+};
 
 //Mongoose Middleware
 UserSchema.pre('save', function(next) {
