@@ -13,7 +13,7 @@ let users = [{
     password: 'vishal123',
     tokens: [{
         access: 'auth',
-        token: JWT.sign({_id: userOneId.toHexString(), access: 'auth'}, 'abc123').toString()
+        token: JWT.sign({_id: userOneId.toHexString(), access: 'auth'}, process.env.JWT_SECRET).toString()
     }]
 }, {
     _id: userTwoId,
@@ -21,7 +21,7 @@ let users = [{
     password: 'kunnu345',
     tokens: [{
         access: 'auth',
-        token: JWT.sign({_id: userTwoId.toHexString(), access: 'auth'}, 'abc123').toString()
+        token: JWT.sign({_id: userTwoId.toHexString(), access: 'auth'}, process.env.JWT_SECRET).toString()
     }]
 }];
 
